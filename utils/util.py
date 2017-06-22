@@ -3,16 +3,16 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
-#get_ipython().magic(u'matplotlib inline')
+import numpy as np
 
 
-""" Return CSV file path given a stock ticker symbol """
 def symbol_to_path(symbol, folder='data'):
+    """ Return CSV file path given a stock ticker symbol """
     return os.path.join(folder, '{}.csv'.format(symbol))
 
 
-""" Reads adjusted close stock data for given symbols from CSV files """
 def get_data(symbols, dates):
+    """ Reads adjusted close stock data for given symbols from CSV files """
     df = pd.DataFrame(index=dates)
 
     for symbol in symbols:
@@ -36,9 +36,8 @@ def plot_data(df, title="Stock prices", xlabel="Data", ylabel="Prices"):
     plt.show()
 
     
-""" Plot stock prices with bollinger bands, custom title, stock label and axis labels """
 def plot_bollinger_band(df, window=20, title='Bollinger Bands', stock_label='Stock'):
-    
+    """ Plot stock prices with bollinger bands, custom title, stock label and axis labels """    
     def get_bollinger_bands(rm_Stock, rstd_Stock):
         upper_band = rm_Stock + 2*rstd_Stock
         lower_band = rm_Stock - 2*rstd_Stock
@@ -65,8 +64,8 @@ def plot_bollinger_band(df, window=20, title='Bollinger Bands', stock_label='Sto
     plt.show()    
     
 
-""" Compute daily returns """    
 def compute_daily_returns(df):
+    """ Compute daily returns """   
     daily_return = df.copy()
     daily_return[1:] = (df[1:] / df[:-1].values) - 1
     #daily_return = (df / df.shift(1)) - 1
@@ -75,3 +74,30 @@ def compute_daily_returns(df):
     else:
         daily_return.ix[0,:] = 0
     return daily_return
+
+
+def plot_histogram(df, title='Histogram', xlabel='x-label'):
+    """ Plot histogram and compute following statistics: mean, sdev and kurtosis """
+    print 'mean=', df.mean()
+    print 'st.dev=', df.std()
+    print 'kurtosis=', df.kurtosis()
+    ax = df.hist(bins=20, figsize=(14,8))
+    # Add axis labels and other features
+    plt.axvline(df.mean(), color='w', linestyle='dashed', linewidth=2)
+    plt.axvline(-df.std(), color='r', linestyle='dashed', linewidth=2)
+    plt.axvline(df.std(), color='r', linestyle='dashed', linewidth=2)
+    plt.title(title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel('frequency')
+    plt.show()
+    
+       
+def fit_scatter(df, x, y):
+    ''' Plot scatter and linearly fit the data '''
+    df.plot(kind='scatter', x=x, y=y, figsize=(14,8))
+    plt.grid()
+    beta_Stock, alpha_Stock = np.polyfit(df[x], df[y],1)
+    print 'beta=', beta_Stock
+    print 'alpha=', alpha_Stock
+    plt.plot(df['SPY'], beta_Stock*df['SPY']+alpha_Stock, '-', color='r')
+    plt.show()
