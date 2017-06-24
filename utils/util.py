@@ -30,8 +30,8 @@ def get_data(symbols, dates, addSPY=True):
     return df
 
 
-""" Plot stock prices with a custom title and axis labels """
-def plot_data(df, title="Stock prices", xlabel="Data", ylabel="Prices"):
+def plot_data(df, title="Stock prices", xlabel="Date", ylabel="Prices"):
+    """ Plot stock prices with a custom title and axis labels """
     ax = df.plot(title=title, fontsize=12, figsize=(15,8))
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
