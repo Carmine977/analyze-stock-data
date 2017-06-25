@@ -4,6 +4,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+get_ipython().magic(u'matplotlib inline')
 
 
 def symbol_to_path(symbol, folder='data'):
