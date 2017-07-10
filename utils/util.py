@@ -12,17 +12,17 @@ def symbol_to_path(symbol, folder='data'):
     return os.path.join(folder, '{}.csv'.format(symbol))
 
 
-def get_data(symbols, dates, addSPY=True):
-    """ Reads adjusted close stock data for given symbols from CSV files """
+def get_data(symbols, dates, price='Adj Close', folder='historical data', addSPY=True):
+    """ Reads price stock data (Adj Close is the default) for given symbols from CSV files """
     df = pd.DataFrame(index=dates)
     
     if addSPY and 'SPY' not in symbols:  # add SPY for reference, if absent
         symbols = ['SPY'] + symbols
     
     for symbol in symbols:
-        df_temp = pd.read_csv(symbol_to_path(symbol), index_col='Date',  
-                usecols=['Date', 'Adj Close'], parse_dates=True, na_values=['NaN'] )
-        df_temp = df_temp.rename(columns={'Adj Close': symbol})
+        df_temp = pd.read_csv(symbol_to_path(symbol, folder), index_col='Date',  
+                usecols=['Date', price], parse_dates=True, na_values=['NaN'] )
+        df_temp = df_temp.rename(columns={price: symbol})
         df = df.join(df_temp)
         
         if symbol == 'SPY':
@@ -78,6 +78,13 @@ def compute_daily_returns(df):
     else:
         daily_return.ix[0,:] = 0
     return daily_return
+
+
+def compute_sharpe_ratio(df, daily_rf=0, samples_per_year=252):
+    """ Compute sharpe ratio """   
+    daily_returns = compute_daily_returns(df)
+    sharpe_ratio = ((daily_returns - daily_rf).mean()/daily_returns.std()) * np.sqrt(samples_per_year)
+    return sharpe_ratio
 
 
 def plot_histogram(df, title='Histogram', xlabel='x-label'):
