@@ -12,7 +12,7 @@ def symbol_to_path(symbol, folder='data'):
     return os.path.join(folder, '{}.csv'.format(symbol))
 
 
-def get_data(symbols, dates, price='Adj Close', folder='historical data', addSPY=True):
+def get_data(symbols, dates, price='Adj Close', folder='data', addSPY=True):
     """ Reads price stock data (Adj Close is the default) for given symbols from CSV files """
     df = pd.DataFrame(index=dates)
     
@@ -105,10 +105,36 @@ def plot_histogram(df, title='Histogram', xlabel='x-label'):
        
 def fit_scatter(df, x, y):
     ''' Plot scatter and linearly fit the data '''
-    df.plot(kind='scatter', x=x, y=y, figsize=(14,8))
+    df.plot(kind='scatter', x=x, y=y)
     plt.grid()
     beta_Stock, alpha_Stock = np.polyfit(df[x], df[y],1)
     print 'beta=', beta_Stock
     print 'alpha=', alpha_Stock
     plt.plot(df['SPY'], beta_Stock*df['SPY']+alpha_Stock, '-', color='r')
     plt.show()
+    
+    
+def ticks_in_cluster(x, y, g_ell_center, g_ell_width, g_ell_height, angle):
+    ''' Returns an array of colors: elements in the cluster are those marked green '''    
+    cos_angle = np.cos(np.radians(180.-angle))
+    sin_angle = np.sin(np.radians(180.-angle))
+
+    xc = x - g_ell_center[0]
+    yc = y - g_ell_center[1]
+
+    xct = xc * cos_angle - yc * sin_angle
+    yct = xc * sin_angle + yc * cos_angle 
+
+    rad_cc = (xct**2/(g_ell_width/2.)**2) + (yct**2/(g_ell_height/2.)**2)
+
+    colors_array = []
+
+    for r in rad_cc:
+        if r <= 1.:
+            # point in ellipse
+            colors_array.append('green')
+        else:
+            # point not in ellipse
+            colors_array.append('blue')
+            
+    return colors_array
