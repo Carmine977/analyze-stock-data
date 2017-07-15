@@ -80,11 +80,31 @@ def compute_daily_returns(df):
     return daily_return
 
 
+def compute_cumulative_returns(df):
+    """ Compute cumulative returns """   
+    cum_ret = (df[-1] / df[0]) - 1
+    return cum_ret
+
+
 def compute_sharpe_ratio(df, daily_rf=0, samples_per_year=252):
-    """ Compute sharpe ratio. Samples_per_year is equal to 252 sampling daily, 52 weekly and 12 montly """   
+    """ Compute sharpe ratio """   
     daily_returns = compute_daily_returns(df)
     sharpe_ratio = ((daily_returns - daily_rf).mean()/daily_returns.std()) * np.sqrt(samples_per_year)
     return sharpe_ratio
+
+
+def get_portfolio_value(prices, allocs, start_val=1):
+    """Computes the daily portfolio value given daily prices for each stock in portfolio, 
+    initial allocations(as fractions that sum to 1) and total starting value invested in portfolio"""
+    # normalize all stock prices
+    df = prices / prices.ix[0]
+    # multiply prices by allocations of each equity
+    df = df * allocs
+    # multiply allocated values by initial investment value
+    df = df * start_val
+    # compute entire portfolio value on each day
+    port_val = df.sum(axis=1)
+    return port_val
 
 
 def plot_histogram(df, title='Histogram', xlabel='x-label'):
