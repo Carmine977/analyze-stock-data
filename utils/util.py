@@ -81,7 +81,7 @@ def compute_daily_returns(df):
 
 
 def compute_sharpe_ratio(df, daily_rf=0, samples_per_year=252):
-    """ Compute sharpe ratio """   
+    """ Compute sharpe ratio. Samples_per_year is equal to 252 sampling daily, 52 weekly and 12 montly """   
     daily_returns = compute_daily_returns(df)
     sharpe_ratio = ((daily_returns - daily_rf).mean()/daily_returns.std()) * np.sqrt(samples_per_year)
     return sharpe_ratio
