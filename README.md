@@ -2,7 +2,7 @@
 
 ## Overview 
 
-This repository collects essential tools for the analysis of stock market and is mainly inspired by the **Machine Learning for Trading course** of Georgia Tech Institute distributed through [Udacity](https://classroom.udacity.com/courses/ud501) 
+This repository collects essential tools for the analysis of stocks market and is mainly inspired by the **Machine Learning for Trading course** of Georgia Tech Institute distributed through [Udacity](https://classroom.udacity.com/courses/ud501) 
 
 
 ## Contents
@@ -23,3 +23,8 @@ Retrieve historical data of the S&P 500 index components
 
 5. Market  Analysis  
 Load all the S&P500 stocks data and after some preprocessing compute important statistics and support user with the identification of the most relevant stocks
+
+
+## Usage
+
+Run this codes using [jupyter notebook](http://jupyter.readthedocs.io/en/latest/install.html). Just type `jupyter notebook` in the main directory and the code will pop up in a browser window. 
