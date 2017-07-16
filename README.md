@@ -27,4 +27,4 @@ Load all the S&P500 stocks data and after some preprocessing compute important s
 
 ## Usage
 
-Run this codes using [jupyter notebook](http://jupyter.readthedocs.io/en/latest/install.html). Just type `jupyter notebook` in the main directory and the code will pop up in a browser window. 
+Run these codes using [jupyter notebook](http://jupyter.readthedocs.io/en/latest/install.html). Just type `jupyter notebook` in the main directory and the code will pop up in a browser window. 
